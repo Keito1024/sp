@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +36,6 @@ public class ItemController {
 
     }
 
-
     @RequestMapping(method = RequestMethod.GET)
     public List<Item> index() throws NotFoundException {
         List<Item> items = itemService.findAll();
@@ -52,7 +52,7 @@ public class ItemController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<ItemDto> create(ItemCreateDto itemCreateDto, BindingResult result) throws BadRequestException {
+    public ResponseEntity<ItemDto> create(@Validated ItemCreateDto itemCreateDto, BindingResult result) throws BadRequestException {
 
         //不正リクエスト
         if (result.hasErrors()) {
@@ -60,6 +60,13 @@ public class ItemController {
         }
         Item item = itemService.create(itemCreateDto.fill());
         return new ResponseEntity<>(ItemDto.of(item), HttpStatus.CREATED);
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE)
+    public ResponseEntity<HttpStatus> delete(@RequestParam("id") long id) {
+        Item item = itemService.findById(id);
+        itemService.delete(item);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     private String getErrorMessages(BindingResult result) {

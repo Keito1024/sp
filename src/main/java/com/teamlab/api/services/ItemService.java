@@ -33,4 +33,9 @@ public class ItemService {
     public Item create(Item item) {
         return itemRepository.saveAndFlush(item);
     }
+
+    public Item delete(Item item) {
+        itemRepository.delete(item);
+        return item;
+    }
 }
