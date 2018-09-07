@@ -29,4 +29,8 @@ public class ItemService {
         Item item = itemRepository.findById(id);
         return item;
     }
+
+    public Item create(Item item) {
+        return itemRepository.saveAndFlush(item);
+    }
 }
