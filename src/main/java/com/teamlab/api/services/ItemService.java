@@ -31,9 +31,10 @@ public class ItemService {
         return itemRepository.findById(id);
     }
 
-    public Stream<Item> findByTitleLike(String title){
+    public Stream<Item> findByTitleLike(String title) {
         return itemRepository.findByTitleContainingOrderById(title).stream();
     }
+
     public Item create(Item item) {
         return itemRepository.saveAndFlush(item);
     }
