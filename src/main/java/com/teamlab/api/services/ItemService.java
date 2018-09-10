@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -25,11 +27,13 @@ public class ItemService {
         return itemRepository.findAll();
     }
 
-    public Item findById(long id) {
-        Item item = itemRepository.findById(id);
-        return item;
+    public Optional<Item> findById(long id) {
+        return itemRepository.findById(id);
     }
 
+    public Stream<Item> findByTitleLike(String title){
+        return itemRepository.findByTitleContainingOrderById(title).stream();
+    }
     public Item create(Item item) {
         return itemRepository.saveAndFlush(item);
     }
@@ -38,4 +42,5 @@ public class ItemService {
         itemRepository.delete(item);
         return item;
     }
+
 }

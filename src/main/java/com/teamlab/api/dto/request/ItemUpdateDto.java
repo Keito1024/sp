@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-public class ItemCreateDto {
+public class ItemUpdateDto {
 
     private Integer price;
 
@@ -24,8 +24,7 @@ public class ItemCreateDto {
     @Size(max = 500, message = "500文字いないです")
     private String img;
 
-    public Item fill() {
-        Item item = new Item();
+    public Item update(Item item) {
         BeanUtils.copyProperties(this, item);
         return item;
     }
