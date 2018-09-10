@@ -58,10 +58,10 @@ public class ItemController {
 
     @RequestMapping(params = "q", method = RequestMethod.GET)
     public ResponseEntity<ItemsDto> searchItem(@RequestParam("q") String title) {
-        if (title.isEmpty()){
-         return new ResponseEntity<>(ItemsDto.createEmpty(), HttpStatus.OK);
+        if (title.isEmpty()) {
+            return new ResponseEntity<>(ItemsDto.createEmpty(), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ItemsDto(itemService.findByTitleLike(title).map(ItemDto::of).collect(Collectors.toList())),HttpStatus.OK);
+        return new ResponseEntity<>(new ItemsDto(itemService.findByTitleLike(title).map(ItemDto::of).collect(Collectors.toList())), HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -83,15 +83,15 @@ public class ItemController {
 
     @RequestMapping(method = RequestMethod.PUT)
     public ResponseEntity<ItemDto> update(@RequestParam("id") long id, @Validated ItemUpdateDto itemUpdateDto, BindingResult result) throws BadRequestException {
-        if (result.hasErrors()){
+        if (result.hasErrors()) {
             throw new BadRequestException(getErrorMessages(result));
         }
         Item item = itemUpdateService.update(itemUpdateDto.update(findProductByIdOrElseThrow(id)));
-        return new ResponseEntity<>(ItemDto.of(item),HttpStatus.OK);
+        return new ResponseEntity<>(ItemDto.of(item), HttpStatus.OK);
     }
 
 
-//    このクラスでしか使わないよー
+    //    このクラスでしか使わないよー
     private String getErrorMessages(BindingResult result) {
         return result.getAllErrors().stream().filter(Objects::nonNull).map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(File.separator));
     }
